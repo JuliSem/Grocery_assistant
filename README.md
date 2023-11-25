@@ -24,7 +24,7 @@
 ```
 git clone "адрес клонируемого репозитория"
 ```
-<br>2. В главной директории проекта создать файл .env и написать следующие переменные:
+<br>2. В корневой директории проекта создать файл .env и написать следующие переменные:
 
 ```
 # Пременные для СУБД PostgreSQL:
@@ -40,11 +40,7 @@ DB_PORT # Порт, по которому Django будет обращаться
           5432
 ```
 
-<br>3. Перейти в папку **backend**, создать и активировать виртуальное окружение:
-
-```
-cd backend
-```
+<br>3. Там же создать и активировать виртуальное окружение:
 
 ```
 python3 -m venv env
@@ -88,7 +84,7 @@ docker compose -f docker-compose.yml up
   в файлах, которые находятся в папке **backend/data**):
 
     ```
-    docker compose -f docker-compose.yml exec backend python manage.py load_data
+    docker compose -f docker-compose.yml exec backend python manage.py loadingredientstags
     ```
 
 
