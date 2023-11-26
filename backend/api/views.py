@@ -5,7 +5,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
 from rest_framework import filters, status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 
@@ -57,8 +57,10 @@ class UserViewSet(UserViewSet):
         user = self.request.user
         author = get_object_or_404(User, id=id)
         if request.method == 'POST':
-            serializer = SubscribeSerializer(data={'user': user.id, 'author': id},
-                                          context={'request': request})
+            serializer = SubscribeSerializer(
+                data={'user': user.id, 'author': id},
+                context={'request': request}
+            )
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -67,9 +69,10 @@ class UserViewSet(UserViewSet):
             if subscription.exists():
                 subscription.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
-            return Response({'error': 'Вы не подписаны на данного пользователя!'},
-                            status=status.HTTP_400_BAD_REQUEST)
-            
+            return Response(
+                {'error': 'Вы не подписаны на данного пользователя!'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 class TagListViewSet(ReadOnlyModelViewSet):
@@ -78,6 +81,7 @@ class TagListViewSet(ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     pagination_class = None
+
 
 class IngredientListViewSet(ReadOnlyModelViewSet):
     """ViewSet для получения ингредиента/ ингредиентов."""
@@ -105,12 +109,12 @@ class RecipeViewSet(ModelViewSet):
         if self.action in ('list', 'retrieve'):
             return RecipeListSerializer
         return RecipeSerializer
-    
+
     def get_permissions(self):
-        if self.action in ('list','retrieve'):
+        if self.action in ('list', 'retrieve'):
             return (ReadOnly(),)
         return super().get_permissions()
-    
+
     @staticmethod
     def method_for_post_action(request, pk, serializers):
         data = {'user': request.user.id, 'recipe': pk}
@@ -118,7 +122,7 @@ class RecipeViewSet(ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
+
     @staticmethod
     def method_for_delete_action(request, pk, model):
         recipe = get_object_or_404(Recipe, id=pk)
@@ -127,25 +131,25 @@ class RecipeViewSet(ModelViewSet):
         )
         model_instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
     @action(detail=True, methods=['post'])
     def favorite(self, request, pk):
         return self.method_for_post_action(request, pk, FavoriteSerializer)
-    
+
     @favorite.mapping.delete
     def delete_favorite(self, request, pk):
         return self.method_for_delete_action(request, pk, Favorite)
-    
+
     @action(detail=True, methods=['post'])
     def shopping_cart(self, request, pk):
         return self.method_for_post_action(
             request, pk, ShoppingCartSerializer
         )
-    
+
     @shopping_cart.mapping.delete
     def delete_shopping_cart(self, request, pk):
         return self.method_for_delete_action(request, pk, ShoppingCart)
-    
+
     @action(
         detail=False, methods=['get'], permission_classes=(IsAuthenticated,)
     )
@@ -161,10 +165,9 @@ class RecipeViewSet(ModelViewSet):
         )
         shopping_list = (('{} ({}) - {}'.format(*ingredient) + '\n')
                          for ingredient in ingredients)
-        
+
         return FileResponse('\n'.join(shopping_list),
                             as_attachment=True,
                             filename='shopping_cart.txt',
                             status=status.HTTP_200_OK,
                             content_type='text/plain')
-        

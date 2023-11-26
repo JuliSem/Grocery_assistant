@@ -8,13 +8,13 @@ from recipes.models import Ingredient, Tag
 
 
 class Command(BaseCommand):
-    """Загрузка ингредиентов, тегов из csv файла(в директории data) 
+    """Загрузка ингредиентов, тегов из csv файла(в директории data)
     в базу данных."""
 
     def handle(self, *args, **options):
         ingredients_file_path = os.path.join(
             settings.BASE_DIR, 'data', 'ingredients.csv'
-            )
+        )
         with open(ingredients_file_path, encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
@@ -31,6 +31,6 @@ class Command(BaseCommand):
                 Tag.objects.get_or_create(
                     name=row[0],
                     color=row[1],
-                    slug=row[2] 
+                    slug=row[2]
                 )
             self.stdout.write('Импорт тегов успешно выполнен!')

@@ -20,5 +20,6 @@ class SubscribeAdmin(admin.ModelAdmin):
     list_display_links = ('user',)
     search_fields = ('user',)
 
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Subscribe, SubscribeAdmin)

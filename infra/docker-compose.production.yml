@@ -4,6 +4,7 @@ volumes:
   media:
   pg_data:
   static:
+  redoc:
 
 services:
   db:
@@ -17,6 +18,7 @@ services:
     volumes:
       - static:/backend_static
       - media:/app/media
+      - redoc:/app/api/docs
   frontend:
     image: juliasem95/foodgram_frontend
     env_file: ../.env
@@ -29,6 +31,6 @@ services:
       - 8000:80
     volumes:
       - ../nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-      - ../backend/docs/:/usr/share/nginx/html/api/docs/
+      - redoc:/usr/share/nginx/html/api/docs/
       - static:/staticfiles/
       - media:/app/media

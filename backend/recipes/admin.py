@@ -40,7 +40,7 @@ class RecipeAdmin(admin.ModelAdmin):
                     'name',
                     'cooking_time',
                     'in_favorite')
-    list_display_links=('name',)
+    list_display_links = ('name',)
     list_filter = ('name', 'author', 'tags')
     search_fields = ('name',)
     readonly_fields = ('in_favorite',)
@@ -66,6 +66,7 @@ class TagAdmin(admin.ModelAdmin):
     list_display_links = ('name',)
     list_filter = ('name',)
     search_fields = ('name',)
+
 
 admin.site.register(Favorite, FavoriteAdmin)
 admin.site.register(Ingredient, IngredientAdmin)

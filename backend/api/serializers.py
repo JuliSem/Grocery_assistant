@@ -82,7 +82,7 @@ class SubscribeListSerializer(serializers.ModelSerializer):
             return False
         return Subscribe.objects.filter(user=request.user,
                                         author=obj.id).exists()
-    
+
 
 class SubscribeSerializer(serializers.ModelSerializer):
     """Serializer для создания подписки."""
@@ -103,12 +103,15 @@ class SubscribeSerializer(serializers.ModelSerializer):
         author = data['author']
         if user == author:
             raise serializers.ValidationError(
-                'Вы не можете подписаться сами на себя!')
+                'Вы не можете подписаться сами на себя!'
+            )
         return data
-    
+
     def to_representation(self, instance):
         request = self.context.get('request')
-        return SubscribeSerializer(instance.author, context={'request': request}).data
+        return SubscribeSerializer(
+            instance.author, context={'request': request}
+        ).data
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -144,7 +147,7 @@ class AddIngredientSerializer(serializers.ModelSerializer):
                 'Количество ингредиентов не должно быть меньше 1!'
             )
         return data
-    
+
     def create(self, validated_data):
         return IngredientAmountSerialiser.objects.create(
             ingredient=validated_data.get('id'),
@@ -195,7 +198,7 @@ class RecipeListSerializer(serializers.ModelSerializer):
         fields = ('id', 'tags', 'author', 'ingredients',
                   'is_favorited', 'is_in_shopping_cart',
                   'name', 'image', 'text', 'cooking_time')
-    
+
     def get_is_favorited(self, obj):
         request = self.context.get('request')
         if request.user.is_anonymous:
@@ -208,7 +211,7 @@ class RecipeListSerializer(serializers.ModelSerializer):
         if request.user.is_anonymous:
             return False
         return ShoppingCart.objects.filter(user=request.user,
-                                            recipe__id=obj.id).exists()
+                                           recipe__id=obj.id).exists()
 
 
 class RecipeSerializer(serializers.ModelSerializer):
@@ -223,7 +226,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ('ingredients','tags', 'image', 'name',
+        fields = ('ingredients', 'tags', 'image', 'name',
                   'text', 'cooking_time')
 
     def create_ingredients(self, recipe, ingredients):
@@ -280,12 +283,12 @@ class RecipeSerializer(serializers.ModelSerializer):
         IngredientAmount.objects.filter(recipe=recipe).delete()
         self.create_ingredients(recipe, ingredients)
         return super().update(recipe, validated_data)
-    
+
     def to_representation(self, instance):
         request = self.context.get('request')
         context = {'request': request}
         return RecipeListSerializer(instance, context=context).data
-    
+
 
 class ShoppingCartSerializer(serializers.ModelSerializer):
     """Serializer для списка покупок."""
@@ -300,12 +303,12 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
             return False
         recipe = data['recipe']
         if ShoppingCart.objects.filter(user=request.user,
-                                        recipe=recipe).exists():
+                                       recipe=recipe).exists():
             raise serializers.ValidationError(
                 'Рецепт уже добавлен в список покупок!'
             )
         return data
-    
+
     def to_representation(self, instance):
         request = self.context.get('request')
         context = {'request': request}
@@ -325,12 +328,12 @@ class FavoriteSerializer(serializers.ModelSerializer):
             return False
         recipe = data['recipe']
         if Favorite.objects.filter(user=request.user,
-                                        recipe=recipe).exists():
+                                   recipe=recipe).exists():
             raise serializers.ValidationError(
                 'Рецепт уже добавлен в избранное!'
             )
         return data
-    
+
     def to_representation(self, instance):
         request = self.context.get('request')
         context = {'request': request}

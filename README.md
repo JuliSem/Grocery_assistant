@@ -95,3 +95,9 @@ docker compose -f docker-compose.yml up
 ### Ссылка на проект:
 
 [foodgram](https://foodgram-byjulia.hopto.org)
+
+### Панель администратора:
+
+Почта: superuser@mail.ru
+Логин: SuperUser
+Пароль: superuserpassword

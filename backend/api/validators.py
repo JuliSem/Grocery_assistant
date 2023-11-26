@@ -19,7 +19,8 @@ def validate_tag_slug(value):
                               'Допустимы: любые буквы(от "a" до "z" '
                               'и от "A" до "Z"), цифры от 0 до 9, а также '
                               'знак "_".')
-    
+
+
 def validate_tag_color(value):
     """Валидация данных в поле color Тега."""
     if not re.match(r'^#([A-Fa-f0-9]{6})$', value):
