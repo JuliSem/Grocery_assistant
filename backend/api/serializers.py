@@ -1,8 +1,6 @@
-import base64
-
-from django.core.files.base import ContentFile
 from django.db.transaction import atomic
-from djoser.serializers import UserCreateSerializer, UserSerializer
+from djoser.serializers import UserSerializer
+from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 from rest_framework.validators import (
     UniqueTogetherValidator
@@ -17,14 +15,6 @@ from recipes.models import (
     Tag
 )
 from users.models import Subscribe, User
-
-
-class SignUpSerializer(UserCreateSerializer):
-    """Serializer для регистрации пользователя."""
-
-    class Meta:
-        model = User
-        fields = ('email', 'username', 'first_name', 'last_name', 'password')
 
 
 class ProfileUserSerializer(UserSerializer):
@@ -155,16 +145,6 @@ class AddIngredientSerializer(serializers.ModelSerializer):
         )
 
 
-class Base64ImageField(serializers.ImageField):
-    """Serializer для изображений, закодированных в Base64."""
-    def to_internal_value(self, data):
-        if isinstance(data, str) and data.startswith('data:image'):
-            format, imgestr = data.split(';base64,')
-            ext = format.split('/')[-1]
-            data = ContentFile(base64.b64decode(imgestr), name='image.' + ext)
-            return super().to_internal_value(data)
-
-
 class IngredientAmountSerialiser(serializers.ModelSerializer):
     """Serializer для получения ингредиентов в рецепте."""
 
@@ -257,6 +237,10 @@ class RecipeSerializer(serializers.ModelSerializer):
                     'Ингредиенты не должны повторяться!'
                 )
             ingredients_list.append(ingredient_id)
+        if not ingredients_list:
+            raise serializers.ValidationError(
+                'Необходимо выбрать хотя бы один ингредиент!'
+            )
         if data['cooking_time'] <= 0:
             raise serializers.ValidationError(
                 'Время приготовления должно быть больше 0!'

@@ -3,14 +3,14 @@ from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
-from rest_framework import filters, status
+from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 
 from .paginations import LimitPagination
-from .filters import RecipeFilter
+from .filters import IngredientSearch, RecipeFilter
 from .permissions import IsAuthorOrReadOnly, ReadOnly
 from .serializers import (
     FavoriteSerializer,
@@ -89,8 +89,7 @@ class IngredientListViewSet(ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = None
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ('^name', )
+    filter_backends = (IngredientSearch, )
 
 
 class RecipeViewSet(ModelViewSet):

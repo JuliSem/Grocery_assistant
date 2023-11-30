@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 
 
@@ -11,6 +12,7 @@ from recipes.models import (
 )
 
 
+@admin.register(Favorite)
 class FavoriteAdmin(admin.ModelAdmin):
     list_display = ('user',
                     'recipe')
@@ -18,6 +20,7 @@ class FavoriteAdmin(admin.ModelAdmin):
     search_fields = ('user',)
 
 
+@admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
     list_display = ('name',
                     'measurement_unit')
@@ -25,6 +28,7 @@ class IngredientAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
 
+@admin.register(IngredientAmount)
 class IngredientAmountAdmin(admin.ModelAdmin):
     list_display = ('ingredient',
                     'recipe',
@@ -34,10 +38,25 @@ class IngredientAmountAdmin(admin.ModelAdmin):
     search_fields = ('ingredient',)
 
 
+class RecipeForm(forms.ModelForm):
+    """Обязательные поля при создании рецепта."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['ingredients', 'tags'].required = True
+
+    class Meta:
+        model = Recipe
+        fields = ('ingredients', 'tags')
+
+
+@admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
+    form = RecipeForm
     list_display = ('pub_date',
                     'author',
                     'name',
+                    'get_ingredients',
                     'cooking_time',
                     'in_favorite')
     list_display_links = ('name',)
@@ -45,13 +64,20 @@ class RecipeAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     readonly_fields = ('in_favorite',)
 
+    @admin.display(description='Количество добавлений в избранное')
     def in_favorite(self, obj):
         """Вычисляет количество добавлений рецепта в избранное."""
         return obj.in_favorite.all().count()
 
-    in_favorite.short_description = 'Количество добавлений в избранное'
+    @admin.display(description='Ингредиенты')
+    def get_ingredients(self, obj):
+        """Выводит список ингредиентов."""
+        return ', '.join(
+            [ingredients.name for ingredients in obj.ingredients.all()]
+        )
 
 
+@admin.register(ShoppingCart)
 class ShoppingCartAdmin(admin.ModelAdmin):
     list_display = ('recipe',
                     'user')
@@ -59,6 +85,7 @@ class ShoppingCartAdmin(admin.ModelAdmin):
     search_fields = ('user',)
 
 
+@admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ('name',
                     'color',
@@ -66,11 +93,3 @@ class TagAdmin(admin.ModelAdmin):
     list_display_links = ('name',)
     list_filter = ('name',)
     search_fields = ('name',)
-
-
-admin.site.register(Favorite, FavoriteAdmin)
-admin.site.register(Ingredient, IngredientAdmin)
-admin.site.register(IngredientAmount, IngredientAmountAdmin)
-admin.site.register(Recipe, RecipeAdmin)
-admin.site.register(ShoppingCart, ShoppingCartAdmin)
-admin.site.register(Tag, TagAdmin)

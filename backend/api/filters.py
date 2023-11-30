@@ -1,12 +1,18 @@
 from django_filters import rest_framework as filters
+from rest_framework.filters import SearchFilter
 
 from recipes.models import Recipe
+
+
+class IngredientSearch(SearchFilter):
+    """Поиск ингредиента по названию при создании рецепта."""
+
+    search_param = 'name'
 
 
 class RecipeFilter(filters.FilterSet):
     """Фильтры для рецептов."""
 
-    author = filters.CharFilter(field_name='author')
     is_favorited = filters.BooleanFilter(
         field_name='is_favorited',
         method='filter_is_favorited'

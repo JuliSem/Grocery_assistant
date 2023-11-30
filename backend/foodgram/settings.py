@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = get_random_secret_key()
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['158.160.80.1', '127.0.0.1', 'localhost', 'foodgram-byjulia.hopto.org']
 
@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'colorfield',
     'djoser',
     'django_filters',
     'sorl.thumbnail',
@@ -126,7 +127,6 @@ DJOSER = {
     },
     'HIDE_USERS': False,
     'SERIALIZERS': {
-        'user_create': 'api.serializers.SignUpSerializer',
         'user': 'api.serializers.ProfileUserSerializer',
         'current_user': 'api.serializers.ProfileUserSerializer',
     }
