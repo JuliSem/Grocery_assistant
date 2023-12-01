@@ -98,6 +98,6 @@ docker compose -f docker-compose.yml up
 
 ### Панель администратора:
 
-Почта: superuser@mail.ru
-Логин: SuperUser
-Пароль: superuserpassword
+- Почта: superuser@mail.ru
+- Логин: SuperUser
+- Пароль: superuserpassword
