@@ -5,9 +5,9 @@ from rest_framework.validators import ValidationError
 
 def validate_name_recipe(value):
     """Валидация данных в поле name рецепта."""
-    if re.match(r'^[\d\W]+$', value):
-        raise ValidationError('Название рецепта не должно состоять '
-                              'только из цифр и знаков!')
+    if not re.findall(r'[a-zA-Zа-яА-Я]', value):
+        raise ValidationError('Название рецепта должно включать в себя буквы'
+                              '(русского либо английского алфавита)!')
 
 
 def validate_username(value):

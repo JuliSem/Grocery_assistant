@@ -124,11 +124,11 @@ class IngredientAmount(models.Model):
         default=1,
         validators=[
             MinValueValidator(limit_value=1,
-                              message='Количество ингредиентов '
+                              message='Количество ингредиента '
                                       'не должно быть меньше 1!'),
-            MaxValueValidator(limit_value=100,
+            MaxValueValidator(limit_value=10000,
                               message='Количество ингредиентов '
-                                      'не должно быть больше 100!')
+                                      'не должно быть больше 10000!')
         ]
     )
 

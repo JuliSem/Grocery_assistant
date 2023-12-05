@@ -99,7 +99,7 @@ class SubscribeSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         request = self.context.get('request')
-        return SubscribeSerializer(
+        return SubscribeListSerializer(
             instance.author, context={'request': request}
         ).data
 

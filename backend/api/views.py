@@ -55,10 +55,10 @@ class UserViewSet(UserViewSet):
     @action(methods=['POST', 'DELETE'], detail=True)
     def subscribe(self, request, id):
         user = self.request.user
-        author = get_object_or_404(User, id=id)
+        author = get_object_or_404(User, pk=id)
         if request.method == 'POST':
             serializer = SubscribeSerializer(
-                data={'user': user.id, 'author': id},
+                data={'user': user.id, 'author': author.id},
                 context={'request': request}
             )
             serializer.is_valid(raise_exception=True)
