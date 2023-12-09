@@ -92,12 +92,16 @@ docker compose -f docker-compose.yml up
 
 Семёнова Юлия (GitHub: JuliSem)
 
-### Ссылка на проект:
+### Project's preview:
 
-[foodgram](https://foodgram-byjulia.hopto.org)
+![Главноая страница!](preview/main_page.png)
 
-### Панель администратора:
+![Страница рецепта!](preview/recipe.png)
 
-- Почта: superuser@mail.ru
-- Логин: SuperUser
-- Пароль: superuserpassword
+![Страница пользователя!](preview/the_author's_page.png)
+
+![Подписки!](preview/subscriptions.png)
+
+![Избранное!](preview/favorites.png)
+
+![Список покупок!](preview/shopping_cart.png)
