@@ -94,14 +94,26 @@ docker compose -f docker-compose.yml up
 
 ### Project's preview:
 
-![Главноая страница!](preview/main_page.png)
+* Главная страница
+  
+    ![Главная страница!](preview/main_page.png)
 
-![Страница рецепта!](preview/recipe.png)
+* Страница рецепта
+  
+    ![Страница рецепта!](preview/recipe.png)
 
-![Страница пользователя!](preview/the_author's_page.png)
+* Страница пользователя
+ 
+    ![Страница пользователя!](preview/the_author's_page.png)
 
-![Подписки!](preview/subscriptions.png)
+* Подписки
 
-![Избранное!](preview/favorites.png)
+    ![Подписки!](preview/subscriptions.png)
 
-![Список покупок!](preview/shopping_cart.png)
+* Избранное
+
+    ![Избранное!](preview/favorites.png)
+
+* Список покупок
+
+    ![Список покупок!](preview/shopping_cart.png)
