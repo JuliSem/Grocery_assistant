@@ -98,13 +98,13 @@ docker compose -f docker-compose.yml up
   
     ![Главная страница!](preview/main_page.png)
 
-* **Страница рецепта**
-  
-    ![Страница рецепта!](preview/recipe.png)
-
 * **Страница пользователя**
  
     ![Страница пользователя!](preview/the_author's_page.png)
+
+* **Страница рецепта**
+  
+    ![Страница рецепта!](preview/recipe.png)
 
 * **Подписки**
 
@@ -117,3 +117,6 @@ docker compose -f docker-compose.yml up
 * **Список покупок**
 
     ![Список покупок!](preview/shopping_cart.png)
+
+Список эндопонтов других страниц можно посмотреть в **ReDoc** (необходимо перейти по ссылке 
+```http:/localhost/api/docs/``` при локальном запуске проекта в контейнерах)
